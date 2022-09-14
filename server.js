@@ -22,6 +22,10 @@ const db = mysql.createConnection(
     console.log(`Connected to the employees_db database.`)
 );
 
+db.connect(function (err) {
+    if (err) throw err;
+  });
+
 // Default response for any other request (Not Found)
 app.use((req, res) => {
     res.status(404).end();
@@ -46,7 +50,8 @@ function init() {
                     "Add a department",
                     "Add a role",
                     "Add an employee",
-                    "Update an employee role"
+                    "Update an employee role",
+                    "Exit"
                 ]
             }
         ])
@@ -63,7 +68,12 @@ function init() {
                     });
                     break;
                 case "View all employees":
-                    db.query('SELECT * FROM employee', function (err, results) {
+                    db.query(`SELECT e.id, e.first_name, e.last_name, r.title, d.name, r.salary,
+                    m.first_name AS "Manager First Name", m.last_name AS "Manager Last Name"
+                    FROM employee e
+                    JOIN role r ON e.role_id = r.id
+                    JOIN department d ON r.department_id = d.id
+                    JOIN employee m ON e.manager_id = m.id;`, function (err, results) {
                         console.log(results);
                     });
                     break;
@@ -78,6 +88,9 @@ function init() {
                     break;
                 case "Update an employee role":
                     updateEmployee();
+                    break;
+                case "Exit":
+                    process.exit();
                     break;
             }
         });
@@ -203,7 +216,7 @@ function updateEmployee() {
                 ])
                 .then((data) => {
                     console.log(data)
-                    db.query(`UPDATE employee SET role_id = ? WHERE id=?;`, [data.role, data.employee], (err, result) => {
+                    db.query(`UPDATE employee SET role_id = ? WHERE id=?`, [data.role, data.employee], (err, result) => {
                         if (err) {
                             console.log(err);
                         }
