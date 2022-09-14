@@ -8,6 +8,6 @@ Manually install the MySQL schema located in the 'db' folder. Install 'schema.sq
 
 ## Links
 
-Here is a walkthrough video demonstrating the app: [Walkthrough](https://www.youtube.com/watch?v=WLBuKiDQj84)
+Here is a walkthrough video demonstrating the app: [Walkthrough](https://www.youtube.com/watch?v=77Lnep3pne8)
 
 Here is a link to the GitHub repository: https://github.com/Dan-To-GitHub/README-Generator.
